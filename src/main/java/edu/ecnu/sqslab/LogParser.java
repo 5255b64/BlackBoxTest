@@ -1,10 +1,12 @@
 package edu.ecnu.sqslab;
 
+import edu.ecnu.sqslab.testsuite.TestSuiteManager;
+
 public class LogParser {
-    private final String PROBE_COUNTER_PREFIX = "PROBE_ID";
-    private final String PROBE_PREFIX = "ACCURATE_PROBE";
-    private final String TESTCASE_NUM_PREFIX = "TEST_CASE_NUM";
-    private final String TESTCASE_PREFIX = "TEST_CASE";
+    private final String PROBE_COUNTER_PREFIX = "PROBE_ID ";
+    private final String PROBE_PREFIX = "ACCURATE_PROBE ";
+    private final String TESTCASE_NUM_PREFIX = "TEST_CASE_NUM ";
+    private final String TESTCASE_PREFIX = "TEST_CASE ";
 
     private int probeNum;
     private int currentTestcaseNum;
@@ -22,7 +24,6 @@ public class LogParser {
     }
 
     public void parse(String input) {
-        // TODO
         String[] strs = input.split(System.lineSeparator());
         for (String str : strs) {
             parseLine(str);
@@ -41,7 +42,7 @@ public class LogParser {
                 String testcaseCode = input.split(" ")[1];
                 testSuite.setTestcaseCode(testcaseCode);
             } else if (input.startsWith(PROBE_PREFIX)) {
-                String probeInfo = input.replaceFirst(PROBE_PREFIX + " ", "");
+                String probeInfo = input.replaceFirst(PROBE_PREFIX, "");
                 testSuite.addProbeInfo(probeInfo);
             }
         } else {

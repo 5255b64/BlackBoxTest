@@ -1,4 +1,4 @@
-package edu.ecnu.sqslab;
+package edu.ecnu.sqslab.testsuite;
 
 import java.util.ArrayList;
 import java.util.List;

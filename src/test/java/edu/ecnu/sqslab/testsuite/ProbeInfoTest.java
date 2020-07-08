@@ -1,4 +1,4 @@
-package edu.ecnu.sqslab;
+package edu.ecnu.sqslab.testsuite;
 
 import org.junit.jupiter.api.Test;
 

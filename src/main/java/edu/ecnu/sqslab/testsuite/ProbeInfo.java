@@ -1,4 +1,4 @@
-package edu.ecnu.sqslab;
+package edu.ecnu.sqslab.testsuite;
 
 public class ProbeInfo {
     private String className;

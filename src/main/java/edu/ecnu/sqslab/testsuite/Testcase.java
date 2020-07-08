@@ -1,4 +1,4 @@
-package edu.ecnu.sqslab;
+package edu.ecnu.sqslab.testsuite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +53,11 @@ public class Testcase {
     public void print() {
         System.out.println("TestcaseNum: "+String.valueOf(testcaseNum));
         System.out.println("TestcaseCode: "+testcaseCode);
-        for(ProbeInfo pi:probeInfos){
-            pi.print();
-        }
+//        for(ProbeInfo pi:probeInfos){
+//            pi.print();
+//        }
+        System.out.println("TestcaseProbeNum: "+probeInfos.size());
+        System.out.println();
     }
 
     //TODO
