@@ -1,8 +1,8 @@
 package edu.ecnu.sqslab.rules.discrete;
 
-import sun.awt.image.ImageWatched;
-
 import java.util.*;
+
+import static edu.ecnu.sqslab.Config.DEFAULT_FEATURE_VALUE_NO_RULE;
 
 /**
  * 字段取值规则
@@ -46,14 +46,38 @@ public class FieldRule {
         return result;
     }
 
+    /**
+     * 获取特征值
+     * 判断给定值strFieldValue在字段规则FieldRule中对应的类别
+     * 从fieldRuleList列表中遍历查询
+     * 如果fieldRuleList中不存在该规则 则返回-1
+     * @param strFieldValue 给定值
+     * @return 若给定值strFieldValue符合fieldRuleList中某个Tuple的规则
+     *         则返回对应Tuple的num
+     *         若不存在符合的规则 则返回-1
+     */
+    public int getAttributeNum(String strFieldValue){
+        int result = DEFAULT_FEATURE_VALUE_NO_RULE;    // 缺省值
+        for(Tuple tmp:fieldRuleList){
+            try {
+                if(tmp.getVr().isApply(strFieldValue)){
+                    result = tmp.getNum();
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
 
     /**
-     * 二元组
+     * 二元组 TODO 使用MyPair来代替
      * 保存字段 取值的编号 和 取值规则
      */
-    class Tuple {
-        public int num;    // 字段取值编号
-        public IValueRule vr;  // 字段取值规则
+    static class Tuple {
+        private final int num;    // 字段取值编号
+        private final IValueRule vr;  // 字段取值规则
 
         public Tuple(int num, IValueRule vr) {
             this.num = num;
@@ -61,8 +85,15 @@ public class FieldRule {
         }
 
         public String toString() {
-//            return String.valueOf(num)+","+vr.toString();
             return vr.toString();
+        }
+
+        public IValueRule getVr(){
+            return this.vr;
+        }
+
+        public int getNum(){
+            return this.num;
         }
     }
 }

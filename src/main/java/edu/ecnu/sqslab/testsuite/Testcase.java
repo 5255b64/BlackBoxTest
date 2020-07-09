@@ -59,6 +59,4 @@ public class Testcase {
         System.out.println("TestcaseProbeNum: "+probeInfos.size());
         System.out.println();
     }
-
-    //TODO
 }
