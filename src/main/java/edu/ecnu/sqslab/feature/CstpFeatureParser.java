@@ -66,6 +66,7 @@ public class CstpFeatureParser {
      */
     public static List<MyPair<String, Integer>> getNWayFeature(String testcaseStr, DiscreteRule dRule, int n) throws Exception {
         if(n==1){
+            // 1-way 直接返回
             return get1WayFeature(testcaseStr, dRule);
         }
         if(n<1){
@@ -78,9 +79,30 @@ public class CstpFeatureParser {
             throw new Exception("getNWayFeature 参数dRule为null");
         }
 
-        List<MyPair<String, Integer>> result = new ArrayList<>();
-        // TODO
+        // TODO 使用递归方法 获取 n-way 特征
+        List<MyPair<String, Integer>> result = get1WayFeature(testcaseStr, dRule);
+        result = getNWayFeatureRecursive(result, n);
+
 
         return result;
+    }
+
+    /**
+     *
+     * @param input
+     * @param n     递归深度 n为0时返回
+     * @return
+     */
+    private static List<MyPair<String, Integer>> getNWayFeatureRecursive(List<MyPair<String, Integer>> input, int n){
+        if(n<=0){
+            return input;
+        }
+
+        List<MyPair<String, Integer>> output = new LinkedList<>();
+
+        // TODO
+
+        return output;
+
     }
 }
