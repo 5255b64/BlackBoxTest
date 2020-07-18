@@ -2,7 +2,9 @@ package edu.ecnu.sqslab.rules.discrete;
 
 import edu.ecnu.sqslab.rules.IRule;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,16 +13,24 @@ import java.util.Map;
  */
 public class DiscreteRule {
     private Map<String, FieldRule> ruleMap = null;
+    private List<FieldRule> ruleList = null;
 
     public DiscreteRule(IRule oldRule) {
         ruleMap = new HashMap<>();
+        ruleList = new ArrayList<>();
         Map<String, String> oldRuleMap = oldRule.getRuleMap();
+        int counter = 0;
         for (Map.Entry<String, String> entry : oldRuleMap.entrySet()) {
             String fieldName = entry.getKey();
             String fieldRule = entry.getValue();
-            FieldRule fr = new FieldRule(fieldRule);
-            ruleMap.put(fieldName, fr);
+            FieldRule fr = new FieldRule(fieldRule, counter++);
+            add(fieldName, fr);
         }
+    }
+
+    private void add(String fieldName, FieldRule fr) {
+        ruleMap.put(fieldName, fr);
+        ruleList.add(fr);
     }
 
     public void print() {
@@ -33,11 +43,15 @@ public class DiscreteRule {
         return this.ruleMap;
     }
 
+    public List<FieldRule> getRuleList(){
+        return ruleList;
+    }
+
     public int getAttributeNum(String fieldName, String strFieldValue) throws Exception {
-        if(fieldName==null){
+        if (fieldName == null) {
             throw new Exception("fieldName为空");
         }
-        if(strFieldValue==null){
+        if (strFieldValue == null) {
             throw new Exception("strFieldValue为空");
         }
         int result = -1;
@@ -59,4 +73,6 @@ public class DiscreteRule {
         }
         return result;
     }
+
+
 }

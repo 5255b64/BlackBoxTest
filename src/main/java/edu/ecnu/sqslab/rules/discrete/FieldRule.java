@@ -11,9 +11,11 @@ import static edu.ecnu.sqslab.Config.DEFAULT_FEATURE_VALUE_NO_RULE;
  */
 public class FieldRule {
     private List<Tuple> fieldRuleList = null;
-    private int ruleNum = 0;
+    private int fieldNum = -1;  // 该field的编号
+    private int ruleNum = 0;    // 该field下有多少条规则
 
-    public FieldRule(String fieldRule) {
+    public FieldRule(String fieldRule, int fieldNum) {
+        this.fieldNum = fieldNum;
         String[] rules = fieldRule.split(",");
         fieldRuleList = new LinkedList<>();
 
@@ -39,11 +41,11 @@ public class FieldRule {
     }
 
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Tuple p : fieldRuleList) {
-            result += " " + p.toString();
+            result.append(" ").append(p.toString());
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -51,16 +53,17 @@ public class FieldRule {
      * 判断给定值strFieldValue在字段规则FieldRule中对应的类别
      * 从fieldRuleList列表中遍历查询
      * 如果fieldRuleList中不存在该规则 则返回-1
+     *
      * @param strFieldValue 给定值
      * @return 若给定值strFieldValue符合fieldRuleList中某个Tuple的规则
-     *         则返回对应Tuple的num
-     *         若不存在符合的规则 则返回-1
+     * 则返回对应Tuple的num
+     * 若不存在符合的规则 则返回-1
      */
-    public int getAttributeNum(String strFieldValue){
+    public int getAttributeNum(String strFieldValue) {
         int result = DEFAULT_FEATURE_VALUE_NO_RULE;    // 缺省值
-        for(Tuple tmp:fieldRuleList){
+        for (Tuple tmp : fieldRuleList) {
             try {
-                if(tmp.getVr().isApply(strFieldValue)){
+                if (tmp.getVr().isApply(strFieldValue)) {
                     result = tmp.getNum();
                     break;
                 }
@@ -72,7 +75,7 @@ public class FieldRule {
     }
 
     /**
-     * 二元组 TODO 使用MyPair来代替
+     * 二元组
      * 保存字段 取值的编号 和 取值规则
      */
     static class Tuple {
@@ -88,12 +91,20 @@ public class FieldRule {
             return vr.toString();
         }
 
-        public IValueRule getVr(){
+        public IValueRule getVr() {
             return this.vr;
         }
 
-        public int getNum(){
+        public int getNum() {
             return this.num;
         }
+    }
+
+    public int getRuleNum() {
+        return ruleNum;
+    }
+
+    public int getFieldNum(){
+        return fieldNum;
     }
 }

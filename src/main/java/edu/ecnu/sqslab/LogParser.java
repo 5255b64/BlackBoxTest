@@ -42,8 +42,8 @@ public class LogParser {
                 String testcaseCode = input.split(" ")[1];
                 testSuite.setTestcaseCode(testcaseCode);
             } else if (input.startsWith(PROBE_PREFIX)) {
-                String probeInfo = input.replaceFirst(PROBE_PREFIX, "");
-                testSuite.addProbeInfo(probeInfo);
+//                String probeInfo = input.replaceFirst(PROBE_PREFIX, "");
+                testSuite.addProbeInfo(input);
             }
         } else {
             System.err.println("currentTestcaseNum < 0 : " + input);

@@ -8,10 +8,11 @@ import java.util.Objects;
 
 /**
  * 在Pair类的基础上 修改了toString方法 实现自定义输出
+ * 添加了compareTo方法 实现对象排序
  * @param <K>
  * @param <V>
  */
-public class MyPair<K,V> implements Serializable {
+public class MyPair<K extends Comparable,V> implements Serializable, Comparable {
     /**
      * Key of this <code>Pair</code>.
      */
@@ -24,7 +25,7 @@ public class MyPair<K,V> implements Serializable {
     public K getKey() { return key; }
 
     /**
-     * Value of this this <code>Pair</code>.
+     * Value of this this <code>MyPair</code>.
      */
     private V value;
 
@@ -101,5 +102,15 @@ public class MyPair<K,V> implements Serializable {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 根据Key值进行排序
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Object o) {
+        return key.compareTo(((MyPair)o).getKey());
     }
 }

@@ -16,12 +16,12 @@ public class ProbeInfo {
     public ProbeInfo(String probeLog) {
         String[] strs = probeLog.split(" ");
         try {
-            className = strs[0];
-            funcName = strs[1];
-            fileName = strs[2];
-            lineNum = Integer.parseInt(strs[3]);
-            threadNum = strs[4];
-            funcSignature = strs[5];
+            className = strs[1];
+            funcName = strs[2];
+            fileName = strs[3];
+            lineNum = Integer.parseInt(strs[4]);
+            threadNum = strs[5];
+            funcSignature = strs[6];
         } catch (Exception e) {
             e.printStackTrace();
         }
