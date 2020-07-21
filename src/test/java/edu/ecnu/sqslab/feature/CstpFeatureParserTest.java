@@ -33,4 +33,19 @@ class CstpFeatureParserTest {
         assertEquals(result, intMap.toString());
     }
 
+    @Test
+    public void getTestcaseCombinationTest(){
+        CstpFeatureParser parser = new CstpFeatureParser(new SimpleTestRule());
+        Map<String, String> strMap = parser.testcaseParserStrMap(simpleTestcaseStr);
+        Map<Integer, Integer> intMap = parser.testcaseParserIntMap(strMap);
+        parser.setNDimension(2);
+        System.out.println(parser.getTestcaseCombination(intMap));
+    }
+
+    @Test
+    public void setVectorTableTest(){
+        CstpFeatureParser parser = new CstpFeatureParser(new SimpleTestRule());
+        parser.setVectorTable(1);
+    }
+
 }

@@ -3,6 +3,7 @@ package edu.ecnu.sqslab.feature;
 import com.alibaba.fastjson.JSONObject;
 import edu.ecnu.sqslab.rules.IRule;
 import edu.ecnu.sqslab.rules.discrete.DiscreteRule;
+import edu.ecnu.sqslab.rules.discrete.FieldRule;
 import edu.ecnu.sqslab.util.MyPair;
 
 import java.util.*;
@@ -87,10 +88,50 @@ public class CstpFeatureParser implements FeatureParser {
      *
      * @param nDimension
      */
-    private void setVectorTable(int nDimension) {
+    protected void setVectorTable(int nDimension) {
         vectorMap = new HashMap<>();
         // TODO 根据rule 计算出所有可能的combination
+        // 初始化 1-way combination
+        List<FieldRule> ruleList = dRule.getRuleList();
+        List<List<CombinationPair<Integer, Integer>>> input = new ArrayList<>();
+        input.add(new ArrayList<>());
+        // 递归获取 n-way combination
+        List<List<CombinationPair<Integer, Integer>>> result =
+                setVectorTableRecursion(input, ruleList, nDimension);
+
+        System.out.println(result);
         // TODO 初始化特征向量表 Map<String, Integer> vectorMap
+    }
+
+    private List<List<CombinationPair<Integer, Integer>>> setVectorTableRecursion(
+            List<List<CombinationPair<Integer, Integer>>> input,
+            List<FieldRule> ruleList,
+            int n) {
+        if (n <= 0) {
+            return input;
+        }
+
+        List<List<CombinationPair<Integer, Integer>>> output = new ArrayList<>();
+        // TODO
+        for(List<CombinationPair<Integer, Integer>> tempComb:input){
+            for(int ruleNum=0;ruleNum<ruleList.size();ruleNum++){
+                boolean flag = true;
+                for (int combNum = 0; combNum < tempComb.size(); combNum++) {
+                    if (tempComb.get(combNum).compareTo(ruleNum) >= 0) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    for(int fieldNum=0;fieldNum<ruleList.get(ruleNum).getRuleNum();fieldNum++){
+                        List<CombinationPair<Integer, Integer>> newComb = new ArrayList<>(tempComb);
+                        newComb.add(new CombinationPair<Integer, Integer>(ruleNum, fieldNum));
+                        output.add(newComb);
+                    }
+                }
+            }
+        }
+        return setVectorTableRecursion(output, ruleList, n-1);
     }
 
     public boolean setNDimension(int n) {
@@ -152,7 +193,7 @@ public class CstpFeatureParser implements FeatureParser {
      * @param testcaseMap
      * @return
      */
-    private List<String> getTestcaseCombination(Map<Integer, Integer> testcaseMap) {
+    protected List<String> getTestcaseCombination(Map<Integer, Integer> testcaseMap) {
         // 初始化列表list 用于递归操作
         List<List<CombinationPair<Integer, Integer>>> list = new ArrayList<>();
 
@@ -167,9 +208,9 @@ public class CstpFeatureParser implements FeatureParser {
 
         // 将数据转换为字符串 插入列表result中
         List<String> result = new ArrayList<>();
-        for(List<CombinationPair<Integer, Integer>> tempComb:recursiveResult){
-            StringBuilder str=new StringBuilder();
-            for(CombinationPair<Integer, Integer> pair:tempComb){
+        for (List<CombinationPair<Integer, Integer>> tempComb : recursiveResult) {
+            StringBuilder str = new StringBuilder();
+            for (CombinationPair<Integer, Integer> pair : tempComb) {
                 str.append(pair.getKey()).append(":").append(pair.getValue()).append(";");
             }
             result.add(str.toString());
@@ -179,6 +220,7 @@ public class CstpFeatureParser implements FeatureParser {
 
     /**
      * getTestcaseCombination方法的递归方法
+     *
      * @param list
      * @param testcaseMap
      * @param n
@@ -195,16 +237,16 @@ public class CstpFeatureParser implements FeatureParser {
 
         for (int i = 0; i < list.size(); i++) {
             List<CombinationPair<Integer, Integer>> tempComb = list.get(i);
-            for(Map.Entry entry:testcaseMap.entrySet()){
+            for (Map.Entry entry : testcaseMap.entrySet()) {
                 boolean flag = true;
-                CombinationPair<Integer, Integer> newPair = new CombinationPair<Integer, Integer>((Integer)entry.getKey(),entry.getValue());
-                for(int j=0;j<tempComb.size();j++){
-                    if(tempComb.get(j).compareTo(newPair)>=0){
+                CombinationPair<Integer, Integer> newPair = new CombinationPair<Integer, Integer>((Integer) entry.getKey(), entry.getValue());
+                for (int j = 0; j < tempComb.size(); j++) {
+                    if (tempComb.get(j).compareTo(newPair) >= 0) {
                         flag = false;
                         break;
                     }
                 }
-                if(flag){
+                if (flag) {
                     List<CombinationPair<Integer, Integer>> newComb = new ArrayList<>(tempComb);
                     newComb.add(newPair);
                     result.add(newComb);
@@ -227,8 +269,15 @@ public class CstpFeatureParser implements FeatureParser {
             super(key, value);
         }
 
-        public int compareTo(Object o){
-            return getKey().compareTo(((CombinationPair)o).getKey());
+        public int compareTo(Object o) {
+            if(o instanceof CombinationPair) {
+                return getKey().compareTo(((CombinationPair) o).getKey());
+            }else if(o instanceof Comparable){
+                return getKey().compareTo((Comparable)o);
+            }else{
+                System.err.println("CombinationPair.compareTo(Object o) 输入参数类型错误:"+ o.getClass());
+                return -1;
+            }
         }
     }
 }
