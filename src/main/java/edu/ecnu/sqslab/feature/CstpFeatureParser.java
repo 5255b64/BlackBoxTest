@@ -90,17 +90,25 @@ public class CstpFeatureParser implements FeatureParser {
      */
     protected void setVectorTable(int nDimension) {
         vectorMap = new HashMap<>();
-        // TODO 根据rule 计算出所有可能的combination
-        // 初始化 1-way combination
+        // 根据rule 计算出所有可能的combination
+        //  初始化 1-way combination
         List<FieldRule> ruleList = dRule.getRuleList();
         List<List<CombinationPair<Integer, Integer>>> input = new ArrayList<>();
         input.add(new ArrayList<>());
-        // 递归获取 n-way combination
+        //  递归获取 n-way combination
         List<List<CombinationPair<Integer, Integer>>> result =
                 setVectorTableRecursion(input, ruleList, nDimension);
 
-        System.out.println(result);
-        // TODO 初始化特征向量表 Map<String, Integer> vectorMap
+        // 初始化特征向量表 Map<String, Integer> vectorMap
+        for(int i=0;i<result.size();i++){
+            StringBuilder attritubeStr = new StringBuilder();
+            List<CombinationPair<Integer, Integer>> comb = result.get(i);
+            for(int j=0;j<comb.size();j++){
+                CombinationPair<Integer, Integer> combPair = comb.get(j);
+                attritubeStr.append(combPair.getKey()).append(":").append(combPair.getValue()).append(";");
+            }
+            vectorMap.put(attritubeStr.toString(), 0);
+        }
     }
 
     private List<List<CombinationPair<Integer, Integer>>> setVectorTableRecursion(
@@ -112,7 +120,6 @@ public class CstpFeatureParser implements FeatureParser {
         }
 
         List<List<CombinationPair<Integer, Integer>>> output = new ArrayList<>();
-        // TODO
         for(List<CombinationPair<Integer, Integer>> tempComb:input){
             for(int ruleNum=0;ruleNum<ruleList.size();ruleNum++){
                 boolean flag = true;
@@ -154,7 +161,11 @@ public class CstpFeatureParser implements FeatureParser {
         }
         Map<Integer, Integer> testcaseMap = testcaseParserIntMap(testcaseParserStrMap(testcaseStr));
 
+//        System.out.println(testcaseMap);
+
         List<String> testcaseCombination = getTestcaseCombination(testcaseMap);
+
+//        System.out.println(vectorMap);
 
         return fillFeatureVertor(testcaseCombination);
     }
@@ -175,7 +186,12 @@ public class CstpFeatureParser implements FeatureParser {
 
         // 将测试用例中的所有combination填入空的特征向量中
         for (String str : testcaseCombination) {
-            newVectorMap.put(str, newVectorMap.get(str) + 1);
+            try {
+                newVectorMap.put(str, newVectorMap.get(str) + 1);
+            }catch (Exception e){
+                System.err.println("找不到规则："+String.valueOf(str));
+                e.printStackTrace();
+            }
         }
 
         // 特征向量从map转换为list

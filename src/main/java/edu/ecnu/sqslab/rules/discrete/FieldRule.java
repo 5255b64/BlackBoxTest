@@ -2,7 +2,7 @@ package edu.ecnu.sqslab.rules.discrete;
 
 import java.util.*;
 
-import static edu.ecnu.sqslab.Config.DEFAULT_FEATURE_VALUE_NO_RULE;
+import static edu.ecnu.sqslab.Config.*;
 
 /**
  * 字段取值规则
@@ -23,6 +23,11 @@ public class FieldRule {
         if (!fieldRule.equals("")) {
             fieldRuleList.add(new Tuple(ruleNum++, new ValueRuleEnum("")));
         }
+
+        // 添加规则OUT_OF_RULE
+        ValueRuleEnum tempValueRule = new ValueRuleEnum(RULE_OUT_OF_RULE);
+        Tuple tempTuple = new Tuple(ruleNum++, tempValueRule);
+        fieldRuleList.add(tempTuple);
 
         for (String rule : rules) {
             IValueRule vr = null;
@@ -52,16 +57,19 @@ public class FieldRule {
      * 获取特征值
      * 判断给定值strFieldValue在字段规则FieldRule中对应的类别
      * 从fieldRuleList列表中遍历查询
-     * 如果fieldRuleList中不存在该规则 则返回-1
+     * 如果fieldRuleList中不存在该规则 则返回DEFAULT_FEATURE_VALUE_NO_RULE
      *
      * @param strFieldValue 给定值
      * @return 若给定值strFieldValue符合fieldRuleList中某个Tuple的规则
      * 则返回对应Tuple的num
-     * 若不存在符合的规则 则返回-1
+     * 若不存在符合的规则 则返回DEFAULT_FEATURE_VALUE_NO_RULE
      */
     public int getAttributeNum(String strFieldValue) {
         int result = DEFAULT_FEATURE_VALUE_NO_RULE;    // 缺省值
-        for (Tuple tmp : fieldRuleList) {
+        if(strFieldValue.equals("")){
+            return DEFAULT_FEATURE_BLANK;
+        }
+            for (Tuple tmp : fieldRuleList) {
             try {
                 if (tmp.getVr().isApply(strFieldValue)) {
                     result = tmp.getNum();
