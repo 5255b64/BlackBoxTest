@@ -10,7 +10,7 @@ import java.util.*;
 
 import static edu.ecnu.sqslab.Config.DEFAULT_FEATURE_VALUE_INVALID;
 
-public class CstpFeatureParser implements FeatureParser {
+public class CstpFeatureParser implements IFeatureParser {
     IRule oldRuld;                      // 使用的原始规则
     DiscreteRule dRule;                 // 使用的离散规则
     int nDimension = -1;                // n-way的维度值n
@@ -145,8 +145,10 @@ public class CstpFeatureParser implements FeatureParser {
         if (n < 1) {
             return false;
         } else {
-            nDimension = n;
-            setVectorTable(nDimension);
+            if(nDimension!=n) {
+                nDimension = n;
+                setVectorTable(nDimension);
+            }
         }
         return true;
     }

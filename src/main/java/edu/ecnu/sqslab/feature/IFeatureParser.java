@@ -5,7 +5,11 @@ import edu.ecnu.sqslab.rules.discrete.DiscreteRule;
 import java.util.List;
 import java.util.Map;
 
-public interface FeatureParser {
+/**
+ * 特征抽取器
+ * 用于抽取n-way特征
+ */
+public interface IFeatureParser {
 
     /**
      * 获取 n-way特征

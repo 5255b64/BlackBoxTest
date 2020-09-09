@@ -11,6 +11,7 @@ class FieldRuleTest {
     public void test1(){
         FieldRule fr = new FieldRule("1,2,3,4~6,0.1~0.111,-3~-1,-0.111~-0.1", 0);
         System.out.println(fr);
+        assertEquals(" #BLANK# #OUT_OF_RULE# 1 2 3 4.0~6.0 0.1~0.111 -3.0~-1.0 -0.111~-0.1", fr);
     }
 
     @Test

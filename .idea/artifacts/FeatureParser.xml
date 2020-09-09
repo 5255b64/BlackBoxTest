@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FeatureParser">
+    <output-path>$PROJECT_DIR$/out/artifacts/FeatureParser</output-path>
+    <root id="archive" name="FeatureParser.jar" />
+  </artifact>
+</component>

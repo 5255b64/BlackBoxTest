@@ -5,11 +5,10 @@ import edu.ecnu.sqslab.rules.SimpleTestRule;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FeatureParserTest {
+class IFeatureParserTest {
     String simpleTestcaseStr = "{\n" +
             "    \"test.rule\": {\n" +
             "        \"A\": \"1\",\n" +
@@ -22,7 +21,7 @@ class FeatureParserTest {
     @Test
     public void getFeatureTest1() {
         String result = "[0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0]";
-        FeatureParser parser = new CstpFeatureParser(new SimpleTestRule());
+        IFeatureParser parser = new CstpFeatureParser(new SimpleTestRule());
         List<Integer> output = parser.getFeature(simpleTestcaseStr, 1);
         assertEquals(result, output.toString());
     }
@@ -30,7 +29,7 @@ class FeatureParserTest {
     @Test
     public void getFeatureTest2() {
         String result = "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]";
-        FeatureParser parser = new CstpFeatureParser(new SimpleTestRule());
+        IFeatureParser parser = new CstpFeatureParser(new SimpleTestRule());
         List<Integer> output = parser.getFeature(simpleTestcaseStr, 2);
         assertEquals(result, output.toString());
     }
@@ -38,7 +37,7 @@ class FeatureParserTest {
     @Test
     public void getFeatureTest3() {
         String result = "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]";
-        FeatureParser parser = new CstpFeatureParser(new SimpleTestRule());
+        IFeatureParser parser = new CstpFeatureParser(new SimpleTestRule());
         List<Integer> output = parser.getFeature(simpleTestcaseStr, 3);
         assertEquals(result, output.toString());
     }
@@ -46,7 +45,7 @@ class FeatureParserTest {
     @Test
     public void getFeatureTest4() {
         String result = "[0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0]";
-        FeatureParser parser = new CstpFeatureParser(new FxDealLogRules());
+        IFeatureParser parser = new CstpFeatureParser(new FxDealLogRules());
         List<Integer> output = parser.getFeature(acturalTestcaseStr, 1);
         assertEquals(result, output.toString());
     }

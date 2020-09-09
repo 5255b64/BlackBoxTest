@@ -1,5 +1,7 @@
 package edu.ecnu.sqslab.testsuite;
 
+import edu.ecnu.sqslab.feature.IFeatureParser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,31 @@ public class TestSuiteManager {
 
     public void setTestcaseCode(String testcaseCode){
         currentTestcase.setTestcaseCode(testcaseCode);
+    }
+
+    /**
+     * 对象：TestSuite中的所有的测试用例
+     * 功能：计算每条测试用例的n-way特征
+     * @param n n-way特征参数
+     * @param parser 特征抽取器
+     */
+    public void getAllTestcaseFeature(IFeatureParser parser, int n){
+        for(Testcase tc:testSuite){
+            tc.setFeature(parser.getFeature(tc.getTestcaseCode(),n));
+        }
+    }
+
+    public List<Testcase> getTestSuite(){
+        return testSuite;
+    }
+
+    @Override
+    public String toString(){
+        StringBuffer stringBuffer = new StringBuffer();
+        for(Testcase tc:testSuite){
+            stringBuffer.append(tc.toString());
+        }
+        return stringBuffer.toString();
     }
 
     public void print() {
