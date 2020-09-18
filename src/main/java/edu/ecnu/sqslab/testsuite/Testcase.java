@@ -23,12 +23,12 @@ public class Testcase {
     /**
      * 保存触发过的桩数量(不累计重复)
      */
-    private int accureteProbeNum;
+    private int absoluteProbeNum;
 
     /**
-     * 测试用例的数量
+     * 测试用例的编号
      */
-    private int testcaseNum;
+    private int testcaseID;
 
     /**
      * 保存测试用例的特征值
@@ -39,8 +39,8 @@ public class Testcase {
         testcaseCode=null;
         probeInfos=new HashMap();
         probeNum=0;
-        accureteProbeNum=0;
-        testcaseNum=-1;
+        absoluteProbeNum =0;
+        testcaseID =-1;
         feature=new ArrayList<>();
     }
 
@@ -49,15 +49,15 @@ public class Testcase {
         this.testcaseCode=testcaseCode;
     }
 
-    public Testcase(int testcaseNum){
+    public Testcase(int testcaseID){
         this();
-        this.testcaseNum=testcaseNum;
+        this.testcaseID = testcaseID;
     }
 
-    public Testcase(String testcaseCode,int testcaseNum){
+    public Testcase(String testcaseCode,int testcaseID){
         this();
         this.testcaseCode=testcaseCode;
-        this.testcaseNum=testcaseNum;
+        this.testcaseID = testcaseID;
     }
 
     public void addProbeInfo(String probeInfo){
@@ -66,7 +66,7 @@ public class Testcase {
             probeInfos.put(probeInfo, probeInfos.get(probeInfo)+1);
         }else {
             probeInfos.put(probeInfo, 1);
-            accureteProbeNum++;
+            absoluteProbeNum++;
         }
     }
 
@@ -78,12 +78,12 @@ public class Testcase {
         this.testcaseCode = testcaseCode;
     }
 
-    public int getTestcaseNum() {
-        return testcaseNum;
+    public int getTestcaseID() {
+        return testcaseID;
     }
 
-    public void setTestcaseNum(int testcaseNum) {
-        this.testcaseNum = testcaseNum;
+    public void setTestcaseID(int testcaseID) {
+        this.testcaseID = testcaseID;
     }
 
     public List<Integer> getFeature(){
@@ -102,14 +102,14 @@ public class Testcase {
         return probeNum;
     }
 
-    public int getAccureteProbeNum(){
-        return accureteProbeNum;
+    public int getAbsoluteProbeNum(){
+        return absoluteProbeNum;
     }
 
     @Override
     public String toString(){
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("TestcaseNum: ").append(String.valueOf(testcaseNum)).append(System.lineSeparator());
+        stringBuffer.append("TestcaseNum: ").append(String.valueOf(testcaseID)).append(System.lineSeparator());
         stringBuffer.append("TestcaseCode: ").append(testcaseCode).append(System.lineSeparator());
         stringBuffer.append("TestcaseProbeNum: ").append(probeNum).append(System.lineSeparator());
         stringBuffer.append("TestcaseUniqueProbeNum: ").append(probeInfos.size()).append(System.lineSeparator());
@@ -119,7 +119,7 @@ public class Testcase {
     }
 
     public void print() {
-        System.out.println("TestcaseNum: "+String.valueOf(testcaseNum));
+        System.out.println("TestcaseNum: "+String.valueOf(testcaseID));
         System.out.println("TestcaseCode: "+testcaseCode);
         System.out.println("TestcaseProbeNum: "+probeInfos.size());
         System.out.println("TestcaseFeature: "+feature.toString());

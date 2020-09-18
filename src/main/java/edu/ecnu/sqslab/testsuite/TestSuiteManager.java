@@ -44,7 +44,11 @@ public class TestSuiteManager {
      * @param parser 特征抽取器
      */
     public void getAllTestcaseFeature(IFeatureParser parser, int n){
+        int counter = 0;
+        String str = String.valueOf(testSuite.size());
         for(Testcase tc:testSuite){
+            counter++;
+            System.out.println("计算组合特征:"+String.valueOf(counter)+"/"+str);
             tc.setFeature(parser.getFeature(tc.getTestcaseCode(),n));
         }
     }

@@ -1,7 +1,6 @@
 package edu.ecnu.sqslab.cli;
 
 import com.alibaba.fastjson.JSONWriter;
-import com.sun.deploy.security.WSeedGenerator;
 import edu.ecnu.sqslab.LogParser;
 import edu.ecnu.sqslab.feature.CstpFeatureParser;
 import edu.ecnu.sqslab.feature.IFeatureParser;
@@ -14,7 +13,6 @@ import edu.ecnu.sqslab.testsuite.Testcase;
 import org.apache.commons.cli.*;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +92,8 @@ public class Main {
                 if (optionalRules.containsKey(rule)) {
                     Class clazz = optionalRules.get(rule);
                     try {
+                        // 处理日志
+                        System.out.println("处理日志");
                         IFeatureParser parser = new CstpFeatureParser((IRule) clazz.getConstructor().newInstance());
                         LogParser lp = new LogParser(new TestSuiteManager());
                         BufferedReader in = new BufferedReader(new FileReader(inputFilePath));
@@ -103,12 +103,21 @@ public class Main {
                         }
                         lp.getAllTestcaseFeature(parser, n);
                         // 获取TestSuite对象
+                        System.out.println("获取TestSuite对象");
                         List<Testcase> testSuite = lp.getTestSuite();
 //                        lp.printTestSuite();
                         // 保存json文件
+                        System.out.println("保存json特征文件");
                         JSONWriter writer = new JSONWriter(new FileWriter(outputFilePath));
                         writer.startArray();
+                        writer.writeValue(new Object() {
+                            public int totalProbeNum = lp.getProbeNum();
+                        });
+                        int counter = 0;
+                        str = String.valueOf(testSuite.size());
                         for (Testcase tc : testSuite) {
+                            counter++;
+                            System.out.println("保存json特征文件:"+String.valueOf(counter) + "/" + str);
                             writer.writeValue(tc);
                         }
                         writer.endArray();
