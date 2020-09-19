@@ -1,5 +1,6 @@
 package edu.ecnu.sqslab.feature;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import edu.ecnu.sqslab.rules.IRule;
 import edu.ecnu.sqslab.rules.discrete.DiscreteRule;
@@ -14,7 +15,7 @@ import java.util.Map;
  * 以及规则中的List嵌套
  */
 public class BcbipFeatureParser extends AFeatureParser implements IFeatureParser {
-    // TODO 参考CstpFeatureParser的代码
+    // 参考CstpFeatureParser的代码
     public BcbipFeatureParser(IRule oldRuld) {
         this.oldRuld = oldRuld;
         this.dRule = new DiscreteRule(oldRuld);
@@ -29,28 +30,44 @@ public class BcbipFeatureParser extends AFeatureParser implements IFeatureParser
 
     @Override
     public Map<String, String> testcaseParserStrMap(String testcaseStr) {
-        // TODO 编写代码
-        Map<String, String> result = new HashMap<>();
         JSONObject object = JSONObject.parseObject(testcaseStr);
+        return BcbipFeatureParser.testcaseParserStrMapRecursion(object);
+    }
+
+    /**
+     * testcaseParserStrMap方法的递归方法
+     *
+     * @param object JSONObject对象
+     * @return
+     */
+    protected static Map<String, String> testcaseParserStrMapRecursion(JSONObject object) {
+        Map<String, String> result = new HashMap<>();
         for (Map.Entry entry : object.entrySet()) {
-            for (Map.Entry fieldObejct : ((JSONObject) entry.getValue()).entrySet()) {
-                // 首字母大写
-                String fieldName = (String) fieldObejct.getKey();
-                String fieldValue = (String) fieldObejct.getValue();
-                char[] ch = fieldName.toCharArray();
-                if (fieldName.length() > 0 && ch[0] >= 'a' && ch[0] <= 'z') {
-                    ch[0] = (char) (ch[0] - 32);
+            if (entry.getValue() instanceof JSONObject) {
+                Map<String, String> subMap = BcbipFeatureParser.testcaseParserStrMapRecursion((JSONObject) entry.getValue());
+                for (Map.Entry<String, String> sub : subMap.entrySet()) {
+                    String newKey = entry.getKey() + "_" + sub.getKey();
+                    result.put(newKey, sub.getValue());
                 }
-                String newFieldName = String.valueOf(ch);
+//                System.out.println("JSONObject " + entry.getValue() + " " + entry.getClass());
+            } else if (entry.getValue() instanceof JSONArray) {
+                List list = (JSONArray)entry.getValue();
+                for(Object listObj:list){
+                    Map<String, String> subMap = BcbipFeatureParser.testcaseParserStrMapRecursion((JSONObject)listObj);
+                    for (Map.Entry<String, String> sub : subMap.entrySet()) {
+                        String newKey = entry.getKey() + "_" + sub.getKey();
+                        result.put(newKey, sub.getValue());
+                    }
+                }
+//                System.out.println("JSONArray " + entry.getValue() + " " + entry.getClass());
+            } else {
+                String fieldName = (String) entry.getKey();
+                String fieldValue = (String) entry.getValue();
+                // 首字母大写
+                String newFieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
                 result.put(newFieldName, fieldValue);
             }
         }
         return result;
-    }
-
-    @Override
-    public Map<Integer, Integer> testcaseParserIntMap(Map<String, String> testcaseStrMap) {
-        // TODO 编写代码
-        return null;
     }
 }

@@ -18,7 +18,7 @@ public class DiscreteRule {
     public DiscreteRule(IRule oldRule) {
         ruleMap = new HashMap<>();
         ruleList = new ArrayList<>();
-        Map<String, String> oldRuleMap = oldRule.getRuleMap();
+        Map<String, String> oldRuleMap = IRule.getRuleMap(oldRule);
         int counter = 0;
         for (Map.Entry<String, String> entry : oldRuleMap.entrySet()) {
             String fieldName = entry.getKey();

@@ -2,6 +2,7 @@ package edu.ecnu.sqslab.rules;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class ARule implements IRule {

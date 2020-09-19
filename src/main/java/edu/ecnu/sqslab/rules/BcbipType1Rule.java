@@ -3,7 +3,7 @@ package edu.ecnu.sqslab.rules;
 import java.util.List;
 
 public class BcbipType1Rule extends ARule implements IRule {
-    public static int x;
+//    public static String x="买入,卖出";
     public static BaseIssueInfo baseIssueInfo;
     public static List<BaseBidInfoList> baseBidInfoList;
     public static BaseConstraint baseConstraint;

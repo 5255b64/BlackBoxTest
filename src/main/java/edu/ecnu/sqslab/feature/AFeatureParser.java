@@ -7,11 +7,13 @@ import edu.ecnu.sqslab.util.CombinationPair;
 
 import java.util.*;
 
+import static edu.ecnu.sqslab.Config.DEFAULT_FEATURE_VALUE_INVALID;
+
 /**
  * 特征提取器的抽象类 实现了通用的主要方法
  * 子类只需要实现
- * testcaseParserStrMap和testcaseParserIntMap
- * 两个方法即可
+ * testcaseParserStrMap
+ * 即可
  */
 abstract public class AFeatureParser implements IFeatureParser {
     IRule oldRuld;                      // 使用的原始规则
@@ -20,8 +22,6 @@ abstract public class AFeatureParser implements IFeatureParser {
     Map<String, Integer> vectorMap;     // 特征向量表
 
     public abstract Map<String, String> testcaseParserStrMap(String testcaseStr);
-
-    public abstract Map<Integer, Integer> testcaseParserIntMap(Map<String, String> testcaseStrMap);
 
     /**
      * 设置特征向量表
@@ -203,6 +203,33 @@ abstract public class AFeatureParser implements IFeatureParser {
             result.add((Integer) entry.getValue());
         }
 
+        return result;
+    }
+
+    /**
+     * 处理测试用例
+     * Map<String, String>类型的的“字段-取值”映射Map
+     * 根据离散规则 DiscreteRule dRule
+     * 转换为Map<Integer, Integer>类型的“字段-取值”Map
+     *
+     * @param testcaseStrMap Map<String, String>类型的Map
+     * @return 一条testcase的Map<Integer, Integer>映射
+     */
+    @Override
+    public Map<Integer, Integer> testcaseParserIntMap(Map<String, String> testcaseStrMap) {
+        Map<Integer, Integer> result = new HashMap<>();
+
+        Set<String> ruleFieldList = dRule.getRuleMap().keySet();            // 离散规则 字段 Set
+        for (String fieldName : ruleFieldList) {
+            int attrubuteValue = DEFAULT_FEATURE_VALUE_INVALID; //缺省值
+            try {
+                attrubuteValue = dRule.getAttributeNum(fieldName, testcaseStrMap.get(fieldName));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            int attritubeNum = dRule.getRuleMap().get(fieldName).getFieldNum();
+            result.put(attritubeNum, attrubuteValue);
+        }
         return result;
     }
 }

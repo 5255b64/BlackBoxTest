@@ -2,12 +2,10 @@ package edu.ecnu.sqslab.cli;
 
 import com.alibaba.fastjson.JSONWriter;
 import edu.ecnu.sqslab.LogParser;
+import edu.ecnu.sqslab.feature.BcbipFeatureParser;
 import edu.ecnu.sqslab.feature.CstpFeatureParser;
 import edu.ecnu.sqslab.feature.IFeatureParser;
-import edu.ecnu.sqslab.rules.FxDealLogRules;
-import edu.ecnu.sqslab.rules.FxOptionDealLogRules;
-import edu.ecnu.sqslab.rules.FxclDealLogRules;
-import edu.ecnu.sqslab.rules.IRule;
+import edu.ecnu.sqslab.rules.*;
 import edu.ecnu.sqslab.testsuite.TestSuiteManager;
 import edu.ecnu.sqslab.testsuite.Testcase;
 import org.apache.commons.cli.*;
@@ -24,12 +22,25 @@ public class Main {
      */
 //    private static final String[] optionalRules = {"FxclDealLog", "FxDealLog", "FxOptionDealLog"};
     private static final Map<String, Class> optionalRules;
+    private static final Map<String, Class> featureParserMap;
 
     static {
         optionalRules = new HashMap<>();
         optionalRules.put("FxclDealLog", FxclDealLogRules.class);
         optionalRules.put("FxDealLog", FxDealLogRules.class);
         optionalRules.put("FxOptionDealLog", FxOptionDealLogRules.class);
+        optionalRules.put("Bcbip1", BcbipType1Rule.class);
+        optionalRules.put("Bcbip2", BcbipType2Rule.class);
+        optionalRules.put("Bcbip3", BcbipType3Rule.class);
+
+        featureParserMap = new HashMap<>();
+        featureParserMap.put("FxclDealLog", CstpFeatureParser.class);
+        featureParserMap.put("FxDealLog", CstpFeatureParser.class);
+        featureParserMap.put("FxOptionDealLog", CstpFeatureParser.class);
+        featureParserMap.put("Bcbip1", BcbipFeatureParser.class);
+        featureParserMap.put("Bcbip2", BcbipFeatureParser.class);
+        featureParserMap.put("Bcbip3", BcbipFeatureParser.class);
+
     }
 
     private static Options OPTIONS = new Options();
@@ -94,7 +105,7 @@ public class Main {
                     try {
                         // 处理日志
                         System.out.println("处理日志");
-                        IFeatureParser parser = new CstpFeatureParser((IRule) clazz.getConstructor().newInstance());
+                        IFeatureParser parser = (IFeatureParser) featureParserMap.get(rule).getConstructor(IRule.class).newInstance(optionalRules.get(rule).newInstance());
                         LogParser lp = new LogParser(new TestSuiteManager());
                         BufferedReader in = new BufferedReader(new FileReader(inputFilePath));
                         String str;
@@ -117,7 +128,7 @@ public class Main {
                         str = String.valueOf(testSuite.size());
                         for (Testcase tc : testSuite) {
                             counter++;
-                            System.out.println("保存json特征文件:"+String.valueOf(counter) + "/" + str);
+                            System.out.println("保存json特征文件:" + String.valueOf(counter) + "/" + str);
                             writer.writeValue(tc);
                         }
                         writer.endArray();
@@ -128,6 +139,8 @@ public class Main {
                 } else {
                     System.err.println("不存在规则：" + rule);
                 }
+            } else {
+                System.out.println(getHelpString());
             }
         } catch (ParseException e) {
             System.out.println(e.getMessage() + "\n" + getHelpString());
@@ -147,7 +160,7 @@ public class Main {
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             PrintWriter printWriter = new PrintWriter(byteArrayOutputStream);
-            helpFormatter.printHelp(printWriter, HelpFormatter.DEFAULT_WIDTH, "scp -help", null,
+            helpFormatter.printHelp(printWriter, HelpFormatter.DEFAULT_WIDTH, "%CMD% -help", null,
                     OPTIONS, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
             printWriter.flush();
             HELP_STRING = new String(byteArrayOutputStream.toByteArray());

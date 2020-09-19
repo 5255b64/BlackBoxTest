@@ -52,31 +52,4 @@ public class CstpFeatureParser extends AFeatureParser implements IFeatureParser 
         }
         return result;
     }
-
-    /**
-     * 处理测试用例
-     * Map<String, String>类型的的“字段-取值”映射Map
-     * 根据离散规则 DiscreteRule dRule
-     * 转换为Map<Integer, Integer>类型的“字段-取值”Map
-     *
-     * @param testcaseStrMap Map<String, String>类型的Map
-     * @return 一条testcase的Map<Integer, Integer>映射
-     */
-    @Override
-    public Map<Integer, Integer> testcaseParserIntMap(Map<String, String> testcaseStrMap) {
-        Map<Integer, Integer> result = new HashMap<>();
-
-        Set<String> ruleFieldList = dRule.getRuleMap().keySet();            // 离散规则 字段 Set
-        for (String fieldName : ruleFieldList) {
-            int attrubuteValue = DEFAULT_FEATURE_VALUE_INVALID; //缺省值
-            try {
-                attrubuteValue = dRule.getAttributeNum(fieldName, testcaseStrMap.get(fieldName));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            int attritubeNum = dRule.getRuleMap().get(fieldName).getFieldNum();
-            result.put(attritubeNum, attrubuteValue);
-        }
-        return result;
-    }
 }
