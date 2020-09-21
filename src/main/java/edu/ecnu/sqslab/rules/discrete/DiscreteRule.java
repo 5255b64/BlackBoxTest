@@ -22,6 +22,8 @@ public class DiscreteRule {
         int counter = 0;
         for (Map.Entry<String, String> entry : oldRuleMap.entrySet()) {
             String fieldName = entry.getKey();
+            // 首字母大写
+//            fieldName = fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
             String fieldRule = entry.getValue();
             FieldRule fr = new FieldRule(fieldRule, counter++);
             add(fieldName, fr);

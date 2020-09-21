@@ -34,6 +34,8 @@ public interface IRule {
             for (Field field : f) {
 //                System.out.println(field);
                 String varName = field.getName();
+                // 首字母大写
+                varName = varName.substring(0,1).toUpperCase()+varName.substring(1);
                 boolean access = field.isAccessible();
                 if (!access) field.setAccessible(true);
                 // 从obj中获取field变量

@@ -32,9 +32,9 @@ public class BcbipType2Rule extends ARule implements IRule {
         public static String syndicateOverflow="";
         public static String lotSize="0.2,1,3,7,10";
         public static String allocType="1";
-        public static InvestTpConstraint investTpConstraint;
+        public static InvstTpConstraint invstTpConstraint;
 
-        static class InvestTpConstraint{
+        static class InvstTpConstraint{
             public static String AM="0,0.17,0.19,1";
             public static String BANK="0,0.04,0.08,1";
             public static String SOV="0,0.17,0.71";

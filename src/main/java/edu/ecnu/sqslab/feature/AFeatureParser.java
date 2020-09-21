@@ -19,7 +19,7 @@ abstract public class AFeatureParser implements IFeatureParser {
     IRule oldRuld;                      // 使用的原始规则
     DiscreteRule dRule;                 // 使用的离散规则
     int nDimension = -1;                // n-way的维度值n
-    Map<String, Integer> vectorMap;     // 特征向量表
+        Map<String, Integer> vectorMap;     // 特征向量表
 
     public abstract Map<String, String> testcaseParserStrMap(String testcaseStr);
 

@@ -20,6 +20,7 @@ public abstract class ARule implements IRule {
 //                System.out.println(field);
 
                 String varName = field.getName();
+                varName = varName.substring(0,1).toUpperCase()+varName.substring(1);
 
                 boolean access = field.isAccessible();
                 if (!access) field.setAccessible(true);

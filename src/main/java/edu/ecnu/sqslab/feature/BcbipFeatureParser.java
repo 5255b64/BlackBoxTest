@@ -43,10 +43,12 @@ public class BcbipFeatureParser extends AFeatureParser implements IFeatureParser
     protected static Map<String, String> testcaseParserStrMapRecursion(JSONObject object) {
         Map<String, String> result = new HashMap<>();
         for (Map.Entry entry : object.entrySet()) {
+            String fieldName = entry.getKey().toString();
+            fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
             if (entry.getValue() instanceof JSONObject) {
                 Map<String, String> subMap = BcbipFeatureParser.testcaseParserStrMapRecursion((JSONObject) entry.getValue());
                 for (Map.Entry<String, String> sub : subMap.entrySet()) {
-                    String newKey = entry.getKey() + "_" + sub.getKey();
+                    String newKey = fieldName + "_" + sub.getKey();
                     result.put(newKey, sub.getValue());
                 }
 //                System.out.println("JSONObject " + entry.getValue() + " " + entry.getClass());
@@ -55,13 +57,13 @@ public class BcbipFeatureParser extends AFeatureParser implements IFeatureParser
                 for(Object listObj:list){
                     Map<String, String> subMap = BcbipFeatureParser.testcaseParserStrMapRecursion((JSONObject)listObj);
                     for (Map.Entry<String, String> sub : subMap.entrySet()) {
-                        String newKey = entry.getKey() + "_" + sub.getKey();
+                        String newKey = fieldName + "_" + sub.getKey();
                         result.put(newKey, sub.getValue());
                     }
                 }
 //                System.out.println("JSONArray " + entry.getValue() + " " + entry.getClass());
             } else {
-                String fieldName = (String) entry.getKey();
+//                String fieldName = (String) entry.getKey();
                 String fieldValue = (String) entry.getValue();
                 // 首字母大写
                 String newFieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
