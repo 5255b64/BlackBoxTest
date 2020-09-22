@@ -107,7 +107,9 @@ public class Main {
                         System.out.println("处理日志");
                         IFeatureParser parser = (IFeatureParser) featureParserMap.get(rule).getConstructor(IRule.class).newInstance(optionalRules.get(rule).newInstance());
                         LogParser lp = new LogParser(new TestSuiteManager());
-                        BufferedReader in = new BufferedReader(new FileReader(inputFilePath));
+//                        BufferedReader in = new BufferedReader(new FileReader(inputFilePath));
+                        // 以GBK编码格式读取
+                        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(inputFilePath),"GBK"));
                         String str;
                         while ((str = in.readLine()) != null) {
                             lp.parse(str);

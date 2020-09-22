@@ -42,6 +42,9 @@ public class BcbipFeatureParser extends AFeatureParser implements IFeatureParser
      */
     protected static Map<String, String> testcaseParserStrMapRecursion(JSONObject object) {
         Map<String, String> result = new HashMap<>();
+        if(object==null){
+            System.out.println("hello");
+        }
         for (Map.Entry entry : object.entrySet()) {
             String fieldName = entry.getKey().toString();
             fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
